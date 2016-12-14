@@ -3,6 +3,7 @@
 
 
 ## Features
+
 * Show host if in remote (ssh) computer
 * Program return code if error
 * Current Working directory
@@ -17,5 +18,20 @@
 * Disk usage alert if over 80% capacity
 * Number of todo items in files
 
+## Install
+Install theme as symlink to $ZSH/themes
+```shell
+> cd ~/src   # or wherever you like to collect local git repositories
+> git clone https://github.com/hevi9/infoline-zsh-theme.git
+> cd infoline-zsh-theme
+> make install
+```
+
+
+## Requirements
+  * oh my zsh - https://github.com/robbyrussell/oh-my-zsh
+
+
 ## TODOs
- * zsh prints local variables on source ?
+
+ * cleanup "exported" variables

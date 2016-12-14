@@ -1,6 +1,8 @@
 #!/usr/bin/zsh
 # infoline
 
+# TODO cleanup "exported" variables
+
 # desc => readme
 local -a readme
 
@@ -132,9 +134,7 @@ info_time() {
   print -n "%*"
 }
 
-# TODO zsh prints local variables on source ?
 # local clock
-
 typeset -AHg clock
 
 clock=(
@@ -149,12 +149,16 @@ info_clock() {
   local hours minutes
   hours=$(date +%I)
   minutes=$(date +%M)
-  if [ $minutes -lt 30 ]; then
+  if [ $minutes -lt 15 ]; then
     minutes=00
-  else
+  elif [ $minutes -lt 45 ]; then
     minutes=30
+  else
+    hours=$(( hours + 1 ))
+    [[ hours -ge 12 ]] && hours=00
+    minutes=00
   fi
-  print -n $clock[$hours$minutes]
+  print -n $clock[$(printf "%02d%02d" $hours $minutes)]
 }
 
 ## * Disk usage alert if over 80% capacity
@@ -219,11 +223,5 @@ render_prompt() {
   print -n ${(j: :)parts_prompt}
 }
 
-
 PROMPT='$(render_prompt)'
 #print ${(%)$(render_prompt)}
-#print $(render_prompt)
-
-# https://github.com/eproxus/pad.zsh-theme
-# http://eseth.org/2009/nethack-term.html
-# http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
