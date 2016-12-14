@@ -3,9 +3,6 @@
 
 # TODO cleanup "exported" variables
 
-# desc => readme
-local -a readme
-
 # local _return_value
 
 # color settings
