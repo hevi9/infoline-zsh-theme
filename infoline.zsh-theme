@@ -102,7 +102,9 @@ info_git() {
 ## * Number of spawned jobs from shell
 info_jobs() {
   local njobs
-  njobs=$(jobs -l | wc -l)
+  # Use subshell for jobs !
+  # http://unix.stackexchange.com/questions/251868/jobs-wc-getting-weird-return-values
+  njobs=$( ( jobs -l ) | wc -l)
   [[ $njobs -gt 0 ]] && print -n "${cNote}${njobs}⚙"
 }
 
@@ -172,10 +174,15 @@ info_disk() {
 }
 
 ## * Number of todo items in files
+# *(N) to suppress zsh error message on empty dircetories => don't
+# hangs prompt
+# use ls -1 to prevent error message
 info_todos() {
   [[ ! -w $PWD ]] && return
-  local value
-  value=$(grep  --directories=skip 'TODO ' * | wc -l)
+  local value files
+  files=$(ls -1)
+  [[ ${#${=files}} -eq 0 ]] && return
+  value=$(grep  --directories=skip 'TODO ' ${=files} | wc -l)
   if [ $value -gt 0 ]; then
     print -n "${cFocus}${value}🔨"
   fi

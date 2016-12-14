@@ -20,6 +20,7 @@ Install theme as symlink to $ZSH/themes
 
 print '
 ## Requirements
+  * 256 color and unicode terminal
   * oh my zsh - https://github.com/robbyrussell/oh-my-zsh
 '
 
