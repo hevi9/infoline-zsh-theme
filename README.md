@@ -1,6 +1,9 @@
 
 # Infoline zsh theme
 
+![Screenshot of Infoline](screenshot.png "Infoline screenshot")
+
+
 
 ## Features
 
@@ -29,6 +32,7 @@ Install theme as symlink to $ZSH/themes
 
 
 ## Requirements
+  * 256 color and unicode terminal
   * oh my zsh - https://github.com/robbyrussell/oh-my-zsh
 
 

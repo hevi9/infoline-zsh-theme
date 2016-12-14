@@ -1,5 +1,8 @@
 print '
 # Infoline zsh theme
+
+![Screenshot of Infoline](screenshot.png "Infoline screenshot")
+
 '
 
 print '
