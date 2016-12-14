@@ -181,11 +181,9 @@ info_todos() {
   fi
 }
 
-
 infoline_parts=(info_cwd info_git info_jobs info_rc info_host info_level  info_todos info_disk info_clock)
 
 infoline_prompt=(info_start)
-
 
 render_prompt() {
   _return_value=$? # have to be first, before any command
