@@ -19,15 +19,8 @@ cNote="%{$fg[blue]%}"
 cImportant="%{$fg[magenta]%}"
 cReset="%{$reset_color%}"
 cDefault="%{$fg[default]%}"
+cLine=$BG[237]
 
-info_user() {
-  local face="☻"
-  if [ $UID -eq 0 ]; then
-    echo -n "${cFocus}%n${face}"
-  else
-    echo -n "%n${face}"
-  fi
-}
 
 ## * Show host if in remote (ssh) computer
 info_host() {
@@ -113,16 +106,22 @@ info_empty() {
   print -n ""
 }
 
-## * Colored start arrow if root
+## * Prompt start arrow colored (and named) by user
+# sudo -s changes the LOGNAME, cannot use just that
 info_start() {
+  local start="▶ "
   if [ $UID -eq 0 ]; then
-    print -n $cImportant"%n ▶ "
+    print -n "$cImportant$USER $start"
   else
-    print -n $cFocus"▶ "
+    if [ $USER != $LOGNAME  -o -n "$SUDO_USER" -o $UID -lt 1000 ]; then
+      print -n "$cNote$USER $start"
+    else
+      print -n "$cFocus$start"
+    fi
   fi
 }
 
-## * Shell level
+## * Shell level indicator
 info_level() {
   if [ $SHLVL -gt 1 ]; then
     print -n "$cFocus⮇"
@@ -144,6 +143,7 @@ clock=(
 )
 
 ## * Analog clock (within 30m)
+# TODO colored clock depending quandrant ?
 info_clock() {
   local hours minutes
   hours=$(date +%I)
@@ -216,7 +216,7 @@ render_prompt() {
   end
 
   print -n $cReset
-  print -n $BG[237]
+  print -n $cLine
   print -n " "
   print -n ${(j: :)parts_info}
   print -n ${(l:$remain:: :)}

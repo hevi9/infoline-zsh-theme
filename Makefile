@@ -6,7 +6,8 @@ help:
 	@echo "  install   - install (symlink) theme to $(target)"
 	@echo "  uninstall - remove $(target)"
 	@echo "Developer targets:"
-
+	@echo "  README.md - generate readme"
+	£echo "  serve     - start local github alike README preview"
 
 install: $(themes_dir) $(target)
 
