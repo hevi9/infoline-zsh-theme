@@ -7,19 +7,19 @@
 
 ## Features
 
-* Show host if in remote (ssh) computer
-* Program return code if error
+* ⌘ Show host if in remote (ssh) computer
+* 🕱 Program return code if error
 * Current Working directory
   * show cwd, trunkated from start if not enough room
   * last path part as focus if writable
   * last path part as error if not writable'
 * Git status
-* Number of spawned jobs from shell
-* Colored start arrow if root
-* Shell level
-* Analog clock (within 30m)
-* Disk usage alert if over 80% capacity
-* Number of todo items in files
+* ⚙ Number of spawned jobs from shell
+* ▶ Prompt start arrow colored (and named) by user
+* ⮇ Shell level indicator
+* 🕒 Analog clock (within 30m)
+* 🖸 Disk usage alert if over 80% capacity
+* 🔨 Number of todo items in files
 
 ## Install
 Install theme as symlink to $ZSH/themes
@@ -39,3 +39,6 @@ Install theme as symlink to $ZSH/themes
 ## TODOs
 
  * cleanup "exported" variables
+ * better rc sigil
+ * git status by priority
+ * colored clock depending quandrant ?
