@@ -67,11 +67,13 @@ info_cwd() {
   path=${(%)path}
   if [ $path = "~" ] || [ $path = "/" ]; then
     print -n ${color}${path}
+    print -n "$cDefault($#_cwd_files)"
     return
   fi
   print -n ${path:h}
   [[ ${path:h} != "/" ]] && print -n /
   print -n ${color}${path:t}
+  print -n "$cDefault($#_cwd_files)"
 }
 
 ZSH_THEME_GIT_PROMPT_UNTRACKED="${cImportant}?"
@@ -143,9 +145,9 @@ clock=(
 )
 
 ## * 🕒 Analog clock (within 30m)
-# TODO colored clock depending quandrant ?
+# TODO colored clock depending quandrant ? or time to commit ?
 info_clock() {
-  local hours minutes
+  local hours minutes color
   hours=$(date +%I)
   minutes=$(date +%M)
   if [ $minutes -lt 15 ]; then
@@ -170,27 +172,39 @@ info_disk() {
   fi
 }
 
+debug() {
+  print -b "D |$@|" 1>&2
+}
+
 ## * 🔨 Number of todo items in files
 # *(N) to suppress zsh error message on empty dircetories => don't
 # hangs prompt
 # use ls -1 to prevent error message
 info_todos() {
-  [[ ! -w $PWD ]] && return
-  local value files
-  files=$(ls -1)
-  [[ ${#${=files}} -eq 0 ]] && return
-  value=$(grep  --directories=skip 'TODO ' ${=files} | wc -l)
+  [[ ! -w $PWD || $#_cwd_files -eq 0 ]] && return
+  local value
+  debug $#_cwd_files ">${(@)_cwd_files}<"
+  value=$(grep  --directories=skip 'TODO ' -- "${(@)_cwd_files} </dev/null" | wc -l)
   if [ $value -gt 0 ]; then
     print -n "${cFocus}${value}🔨"
   fi
 }
 
-infoline_parts=(info_cwd info_git info_jobs info_rc info_host info_level  info_todos info_disk info_clock)
+infoline_parts=(info_cwd info_git info_jobs info_rc info_host info_level
+# info_todos
+info_disk info_clock)
 
 infoline_prompt=(info_start)
 
 render_prompt() {
-  _return_value=$? # have to be first, before any command
+  # collect shared information first
+
+  # have to be first, before any command
+  _return_value=$?
+  # -L follow symlinks, but -H do not follow symlink cycles
+  # use 0-terminated listing if name contains \n
+  _cwd_files=("${(@ps:\0:)$(find -L -H . -maxdepth 1 -type f -printf '%f\0')}")
+
 
   local -a parts_info parts_prompt
   local part value
