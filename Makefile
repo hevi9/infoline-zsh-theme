@@ -10,6 +10,7 @@ help:
 	£echo "  serve     - start local github alike README preview"
 
 install: $(themes_dir) $(target)
+	python3.5 setup.py develop --user
 
 $(target):
 	ln -s $(PWD)/infoline.zsh-theme $@

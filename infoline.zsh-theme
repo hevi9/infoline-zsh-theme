@@ -31,7 +31,6 @@ info_host() {
 }
 
 ## * 🕱 Program return code if error
-# TODO better rc sigil
 info_rc() {
   local face_ok face_err
   face_ok="☑"
@@ -239,5 +238,7 @@ render_prompt() {
   print -n ${(j: :)parts_prompt}
 }
 
+
 PROMPT='$(render_prompt)'
+#PROMPT='$(python3 -m infoline)'
 #print ${(%)$(render_prompt)}
