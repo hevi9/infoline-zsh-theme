@@ -23,7 +23,7 @@ class Char:
     cross = '✖'
     dot = '●'
     flag = '⚑'
-    # TODO skull uses 2 characters
+    # TODO skull uses 2 characters ?
     skull = '\U0001F571'  # '🕱' 2 chars ? U+1F571
     jobs = '⚙'
     level = '⮇'
@@ -63,7 +63,27 @@ class ZshShell(NoColor):
     strip = re.compile(r'%{.*?%}')
 
 
+# TODO bash support, bash shell detection
+
+bash_cover = lambda t: "\\[%s\\]" % t
+
+
+class BashShell(NoColor):
+    ok = bash_cover(ansi.fg(2))
+    note = bash_cover(ansi.fg(4))
+    focus = bash_cover(ansi.fg(3))
+    important = bash_cover(ansi.fg(5))
+    error = bash_cover(ansi.fg(168))
+    default = bash_cover(ansi.fg_default)
+    reset = bash_cover(ansi.reset)
+    line = bash_cover(ansi.bg(237))
+    strip = re.compile(r'\\\[.*?\]')
+
+
 Shell = ZshShell
+
+
+# Shell = BashShell # don't work yet \[ \] evaluation problem
 
 
 class Info:
