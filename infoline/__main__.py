@@ -23,7 +23,6 @@ class Char:
     cross = '✖'
     dot = '●'
     flag = '⚑'
-    # TODO skull uses 2 characters ?
     skull = '\U0001F571'  # '🕱' 2 chars ? U+1F571
     jobs = '⚙'
     level = '⮇'
@@ -34,11 +33,6 @@ class Char:
     diverged = '⭿'
     stashed = '≡'
     start = '▶'
-
-class BashChar(Char):
-    level = '|'
-
-Char = BashChar
 
 
 class NoColor:
@@ -56,7 +50,7 @@ class NoColor:
 zsh_cover = lambda t: "%%{%s%%}" % t
 
 
-class ZshShell(NoColor):
+class Shell(NoColor):
     ok = zsh_cover(ansi.fg(2))
     note = zsh_cover(ansi.fg(4))
     focus = zsh_cover(ansi.fg(3))
@@ -66,31 +60,6 @@ class ZshShell(NoColor):
     reset = zsh_cover(ansi.reset)
     line = zsh_cover(ansi.bg(237))
     strip = re.compile(r'%{.*?%}')
-
-
-# TODO bash support, bash shell detection
-
-# NOTE bash prompt non-printable markers \[ and \] don't work on command
-#      variable $(cmd), use \x01 and \x02 instead
-
-bash_cover = lambda t: "\x01%s\x02" % t
-
-class BashShell(NoColor):
-    ok = bash_cover(ansi.fg(2))
-    note = bash_cover(ansi.fg(4))
-    focus = bash_cover(ansi.fg(3))
-    important = bash_cover(ansi.fg(5))
-    error = bash_cover(ansi.fg(168))
-    default = bash_cover(ansi.fg_default)
-    reset = bash_cover(ansi.reset)
-    line = bash_cover(ansi.bg(237))
-    strip = re.compile('\x01.*?\x02')
-
-
-Shell = ZshShell
-
-
-# Shell = BashShell # don't work yet \[ \] evaluation problem
 
 
 class Info:
@@ -121,6 +90,7 @@ def info(*, priority=0, align="L"):
     return wrap
 
 
+## * Show host if in remote (ssh) computer
 @info()
 def host(maxwidth, _):
     try:
@@ -129,7 +99,10 @@ def host(maxwidth, _):
     except KeyError:
         return ""
 
-
+## * Show Current Working directory
+##   * show cwd, trunkated from start if not enough room
+##   * Current dir part as green if can write, red if not
+##   * Number of files in current dir
 @info()
 def cwd(maxwidth, _):
     cwd = os.getcwd()
@@ -170,6 +143,10 @@ def cwd(maxwidth, _):
 # TODO git conflicted files
 # TODO git stashes
 # logic from https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/git.zsh
+## * Show git status if exists
+##   * Repo dirty
+##   * Untracked files
+##   * Repo ahead, behind or diverged from upstream. Missing upstream.
 @info()
 def show_git(maxwidth, _):
     try:
@@ -199,7 +176,9 @@ def show_git(maxwidth, _):
         indicators += Shell.error + Char.ahead + Shell.default
     return color + str(branch) + indicators
 
-
+# NOTE Set export VIRTUAL_ENV_DISABLE_PROMPT=yes
+# TODO Sign for virtual env
+## * Show python virtual env
 @info()
 def virtual_env(maxwidth, _):
     try:
@@ -209,7 +188,7 @@ def virtual_env(maxwidth, _):
     except KeyError:
         return ""
 
-
+## * 🕱 Program return code if error
 @info(align="R")
 def rc(_, ctx):
     try:
@@ -221,7 +200,7 @@ def rc(_, ctx):
     except KeyError:
         return Shell.error + "rc=$?"
 
-
+## * ⚙ Number of spawned jobs from shell
 @info(align="R")
 def jobs(_1, _2):
     this_process = psutil.Process()
@@ -233,7 +212,7 @@ def jobs(_1, _2):
     else:
         return ""
 
-
+## * ⮇ Shell level indicator
 @info(align="R")
 def shell_level(_1, _2):
     try:
@@ -247,7 +226,7 @@ def shell_level(_1, _2):
     except KeyError or ValueError:
         return Shell.error + "\\$SHLVL"
 
-
+## * 🖸 Disk usage alert if over 80% capacity
 @info(align="R")
 def disk(_1, _2):
     usage = psutil.disk_usage(".").percent
@@ -256,7 +235,7 @@ def disk(_1, _2):
     else:
         return ""
 
-
+## * VM Virtual memory usage alert if over 80% capacity
 @info(align="R")
 def virtual_memory(_1, _2):
     usage = psutil.virtual_memory().percent
@@ -266,7 +245,7 @@ def virtual_memory(_1, _2):
         return ""
 
 
-# TODO todos
+# TODO todos in current directory info
 
 
 clocks = {
@@ -307,6 +286,7 @@ def start():
     return color + user + Char.start + " "
 
 
+# NOTE Set export DEBUG_PROMPT=1 to show debug log on prompt making
 def main():
     if os.environ.get("DEBUG_PROMPT"):
         logging.basicConfig(level=logging.DEBUG)

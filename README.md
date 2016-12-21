@@ -1,5 +1,5 @@
 
-# Infoline zsh theme
+# Infoline zsh prompt theme
 
 ![Screenshot of Infoline](screenshot.png "Infoline screenshot")
 
@@ -7,38 +7,56 @@
 
 ## Features
 
-* ⌘ Show host if in remote (ssh) computer
-* 🕱 Program return code if error
-* Current Working directory
+* Show host if in remote (ssh) computer
+* Show Current Working directory
   * show cwd, trunkated from start if not enough room
-  * last path part as focus if writable
-  * last path part as error if not writable'
-* Git status
+  * Current dir part as green if can write, red if not
+  * Number of files in current dir
+* Show git status if exists
+  * Repo dirty
+  * Untracked files
+  * Repo ahead, behind or diverged from upstream. Missing upstream.
+* Show python virtual env
+* 🕱 Program return code if error
 * ⚙ Number of spawned jobs from shell
-* ▶ Prompt start arrow colored (and named) by user
 * ⮇ Shell level indicator
-* 🕒 Analog clock (within 30m)
 * 🖸 Disk usage alert if over 80% capacity
-* 🔨 Number of todo items in files
+* VM Virtual memory usage alert if over 80% capacity
 
 ## Install
-Install theme as symlink to $ZSH/themes
+Install theme as symlink to oh my zsh $ZSH/themes
 ```shell
 > cd ~/src   # or wherever you like to collect local git repositories
 > git clone https://github.com/hevi9/infoline-zsh-theme.git
 > cd infoline-zsh-theme
-> make install
+> make install-omz
 ```
+
+Install to use directly in .zshrc
+  * make install instead make install-omz
+  * Edit infoline.zsh-theme contents into your .zshrc
 
 
 ## Requirements
   * 256 color and unicode terminal
+  * zsh
   * oh my zsh - https://github.com/robbyrussell/oh-my-zsh
+  * Python 3.4+, pip and dependencies via pip install:
+    * psutils
+    * gitpython
 
 
-## TODOs
+## Notes
+ * This prompt uses python for more complex and convient programmnig than shell,
+   therefore process startup cost is higher. Prompt execution takes usually
+   130ms.
+ * Set export VIRTUAL_ENV_DISABLE_PROMPT=yes
+ * Set export DEBUG_PROMPT=1 to show debug log on prompt making
 
- * cleanup "exported" variables
- * better rc sigil
- * git status by priority
- * colored clock depending quandrant ?
+## Todos
+ * bash support, after bash unicode and non-printable wrap issues are resolved
+ * git detached head
+ * git conflicted files
+ * git stashes
+ * Sign for virtual env
+ * todos in current directory info
