@@ -1,3 +1,8 @@
+NAME=infoline
+
+PY=python3
+PIP=$(PY) -m pip
+
 themes_dir=$(ZSH)/themes
 target=$(themes_dir)/infoline.zsh-theme
 
@@ -10,13 +15,14 @@ help:
 	£echo "  serve     - start local github alike README preview"
 
 install: $(themes_dir) $(target)
-	python3.5 setup.py develop --user
+	$(PIP) install --user -e .
 
 $(target):
 	ln -s $(PWD)/infoline.zsh-theme $@
 
 uninstall:
 	rm -f $(target)
+	$(PIP) uninstall --yes $(NAME)
 
 README.md: readme.sh infoline.zsh-theme
 	zsh readme.sh >$@

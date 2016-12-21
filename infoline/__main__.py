@@ -10,9 +10,10 @@ import time
 import git
 import psutil
 
+from . import ansi
+
 log = logging.getLogger(__name__)
 D = log.debug
-logging.basicConfig(level=logging.DEBUG)
 
 
 class Char:
@@ -35,16 +36,34 @@ class Char:
     start = '▶'
 
 
-class Shell:
-    ok = "%{$fg[green]%}"
-    note = "%{$fg[blue]%}"
-    focus = "%{$fg[yellow]%}"
-    important = "%{$fg[magenta]%}"
-    error = "%{$FG[168]%}"
-    default = "%{$fg[default]%}"
-    reset = "%{$reset_color%}"
-    line = "$BG[237]"
+class NoColor:
+    ok = ""
+    note = ""
+    focus = ""
+    important = ""
+    error = ""
+    default = ""
+    reset = ""
+    line = ""
+    strip = re.compile(r'')
+
+
+zsh_cover = lambda t: "%%{%s%%}" % t
+
+
+class ZshShell(NoColor):
+    ok = zsh_cover(ansi.fg(2))
+    note = zsh_cover(ansi.fg(4))
+    focus = zsh_cover(ansi.fg(3))
+    important = zsh_cover(ansi.fg(5))
+    error = zsh_cover(ansi.fg(168))
+    default = zsh_cover(ansi.fg_default)
+    reset = zsh_cover(ansi.reset)
+    line = zsh_cover(ansi.bg(237))
     strip = re.compile(r'%{.*?%}')
+
+
+Shell = ZshShell
 
 
 class Info:
@@ -74,8 +93,6 @@ def info(*, priority=0, align="L"):
 
     return wrap
 
-
-# TODO host
 
 @info()
 def host(maxwidth, _):
@@ -264,6 +281,9 @@ def start():
 
 
 def main():
+    if os.environ.get("DEBUG_PROMPT"):
+        logging.basicConfig(level=logging.DEBUG)
+
     ctx = {}
     for arg in sys.argv[1:]:
         try:
@@ -273,7 +293,7 @@ def main():
             ctx[arg] = None
     D("ctx=%s", ctx)
 
-    columns, _ = shutil.get_terminal_size()
+    columns, _ = shutil.get_terminal_size()  # seems not to work always
     D("columns=%d", columns)
 
     w = sys.stdout.write
@@ -285,8 +305,9 @@ def main():
             remain -= info.width + 1
     remain += 1 + 1
 
-    for info in infos:
-        D("%s %s%d '%s'", info.name, info.align, info.width, info.value)
+    for i, info in enumerate(infos):
+        D("info-%d %s %s%d '%s'", i, info.name, info.align, info.width,
+          info.value)
 
     lefts = [i.value for i in infos if i.align == "L" and i.value]
     rights = [i.value for i in infos if i.align == "R" and i.value]
@@ -300,6 +321,7 @@ def main():
     w(Char.fill)
     w(Shell.reset)
     w(start())
+    w(Shell.reset)
 
 
 if __name__ == "__main__":
