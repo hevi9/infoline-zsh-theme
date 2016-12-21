@@ -35,6 +35,11 @@ class Char:
     stashed = '≡'
     start = '▶'
 
+class BashChar(Char):
+    level = '|'
+
+Char = BashChar
+
 
 class NoColor:
     ok = ""
@@ -65,8 +70,10 @@ class ZshShell(NoColor):
 
 # TODO bash support, bash shell detection
 
-bash_cover = lambda t: "\\[%s\\]" % t
+# NOTE bash prompt non-printable markers \[ and \] don't work on command
+#      variable $(cmd), use \x01 and \x02 instead
 
+bash_cover = lambda t: "\x01%s\x02" % t
 
 class BashShell(NoColor):
     ok = bash_cover(ansi.fg(2))
@@ -77,7 +84,7 @@ class BashShell(NoColor):
     default = bash_cover(ansi.fg_default)
     reset = bash_cover(ansi.reset)
     line = bash_cover(ansi.bg(237))
-    strip = re.compile(r'\\\[.*?\]')
+    strip = re.compile('\x01.*?\x02')
 
 
 Shell = ZshShell
