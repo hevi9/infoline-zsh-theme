@@ -4,6 +4,7 @@ import pwd
 import re
 import shutil
 import socket
+import stat
 import sys
 import time
 
@@ -23,16 +24,20 @@ class Char:
     cross = '✖'
     dot = '●'
     flag = '⚑'
-    skull = '\U0001F571'  # '🕱' 2 chars ? U+1F571
+    skull = '🕱'
     jobs = '⚙'
     level = '⮇'
     disk = '🖸'
+    memory = '🖫'
     untracked = '?'
     ahead = '⭱'
     behind = '⭳'
     diverged = '⭿'
     stashed = '≡'
     start = '▶'
+    file = '🗎'
+    dir = '📁'
+    todo = '🔨'
 
 
 class NoColor:
@@ -47,6 +52,7 @@ class NoColor:
     strip = re.compile(r'')
 
 
+# non-printable terminal control sequence wrap
 zsh_cover = lambda t: "%%{%s%%}" % t
 
 
@@ -71,8 +77,8 @@ class Info:
         self.priority = priority
         self.align = align
 
-    def render(self, maxwidth, ctx):
-        self.value = self.render_func(maxwidth, ctx)
+    def render(self, ctx):
+        self.value = self.render_func(ctx)
         if self.value:
             self.value += Shell.default
         self.width = len(Shell.strip.sub('', self.value))
@@ -92,21 +98,21 @@ def info(*, priority=0, align="L"):
 
 ## * Show host if in remote (ssh) computer
 @info()
-def host(maxwidth, _):
+def host(ctx):
     try:
         os.environ["SSH_CLIENT"]
         return socket.gethostname()
     except KeyError:
         return ""
 
+
 ## * Show Current Working directory
 ##   * show cwd, trunkated from start if not enough room
 ##   * Current dir part as green if can write, red if not
 ##   * Number of files in current dir
 @info()
-def cwd(maxwidth, _):
+def cwd(ctx):
     cwd = os.getcwd()
-    files = os.listdir(cwd)
     if os.access(cwd, os.W_OK):
         color = Shell.ok
     else:
@@ -123,19 +129,15 @@ def cwd(maxwidth, _):
         dir = ""
     if dir:
         dir = dir + os.sep if dir != "/" else dir
-    files = "(%d)" % len(files)
     # select and/or cwd info into given space
-    if len(dir) + len(name) + len(files) <= maxwidth:
-        return dir + color + name + Shell.default + files
-    elif len(dir) + len(name) <= maxwidth:
+    if len(dir) + len(name) <= ctx.maxwidth:
         return dir + color + name + Shell.default
     else:
-        dir = Char.cont + dir[-(maxwidth - len(name) - 1):]
-        D(dir)
-        if len(dir) + len(name) <= maxwidth:
+        dir = Char.cont + dir[-(ctx.maxwidth - len(name) - 1):]
+        if len(dir) + len(name) <= ctx.maxwidth:
             return dir + color + name + Shell.default
         else:
-            name = Char.cont + name[-(maxwidth - 1):]
+            name = Char.cont + name[-(ctx.maxwidth - 1):]
             return color + name + Shell.default
 
 
@@ -148,7 +150,7 @@ def cwd(maxwidth, _):
 ##   * Untracked files
 ##   * Repo ahead, behind or diverged from upstream. Missing upstream.
 @info()
-def show_git(maxwidth, _):
+def show_git(ctx):
     try:
         repo = git.Repo()
     except git.InvalidGitRepositoryError:
@@ -176,11 +178,12 @@ def show_git(maxwidth, _):
         indicators += Shell.error + Char.ahead + Shell.default
     return color + str(branch) + indicators
 
+
 # NOTE Set export VIRTUAL_ENV_DISABLE_PROMPT=yes
 # TODO Sign for virtual env
 ## * Show python virtual env
 @info()
-def virtual_env(maxwidth, _):
+def virtual_env(ctx):
     try:
         venv = os.environ["VIRTUAL_ENV"]
         venv = os.path.basename(venv)
@@ -188,11 +191,63 @@ def virtual_env(maxwidth, _):
     except KeyError:
         return ""
 
+
+def can_write(entry):
+    try:
+        st = entry.stat()
+    except Exception:
+        return False
+    mode = st.st_mode
+    euid = os.geteuid()
+    egid = os.getegid()
+    return (mode & stat.S_IWOTH or
+            (egid == st.st_gid and mode & stat.S_IWGRP) or
+            (euid == st.st_uid and mode & stat.S_IWUSR))
+
+
+## * Show number of files in current directory with color: ok - all writable
+##   focus - some not writable, error - none writable
+@info(align="R")
+def files(ctx):
+    if len(ctx.files):
+        count = 0
+        for entry in ctx.files:
+            if can_write(entry):
+                count += 1
+        color = Shell.error
+        if count == len(ctx.files):
+            color = Shell.ok
+        if 0 < count < len(ctx.files):
+            color = Shell.focus
+        return color + str(len(ctx.files)) + Char.file
+    else:
+        return ""
+
+
+## * Show number of directories in current dircetory with color:
+##   ok - all writable, focus - some not writable, error - none writable
+@info(align="R")
+def dirs(ctx):
+    if len(ctx.dirs):
+        count = 0
+        for entry in ctx.dirs:
+            if can_write(entry):
+                count += 1
+        color = Shell.error
+        if count == len(ctx.dirs):
+            color = Shell.ok
+        if 0 < count < len(ctx.dirs):
+            color = Shell.focus
+        return color + str(len(ctx.dirs)) + Char.dir
+    else:
+        return ""
+
+
 ## * 🕱 Program return code if error
 @info(align="R")
-def rc(_, ctx):
+def rc(ctx):
     try:
-        rc = int(ctx["rc"])
+        rc = int(ctx.rc)
         if rc != 0:
             return Shell.error + str(rc) + Char.skull
         else:
@@ -200,9 +255,10 @@ def rc(_, ctx):
     except KeyError:
         return Shell.error + "rc=$?"
 
+
 ## * ⚙ Number of spawned jobs from shell
 @info(align="R")
-def jobs(_1, _2):
+def jobs(ctx):
     this_process = psutil.Process()
     # filter this process out
     shell_childrens = [i for i in this_process.parent().children()
@@ -212,9 +268,10 @@ def jobs(_1, _2):
     else:
         return ""
 
+
 ## * ⮇ Shell level indicator
 @info(align="R")
-def shell_level(_1, _2):
+def shell_level(ctx):
     try:
         level = int(os.environ["SHLVL"])
         D("shell level=%d", level)
@@ -226,21 +283,23 @@ def shell_level(_1, _2):
     except KeyError or ValueError:
         return Shell.error + "\\$SHLVL"
 
+
 ## * 🖸 Disk usage alert if over 80% capacity
 @info(align="R")
-def disk(_1, _2):
+def disk(ctx):
     usage = psutil.disk_usage(".").percent
     if usage > 80:
         return Shell.important + "%d" % usage + Char.disk
     else:
         return ""
 
-## * VM Virtual memory usage alert if over 80% capacity
+
+## * 🖫 Virtual memory usage alert if over 80% capacity
 @info(align="R")
-def virtual_memory(_1, _2):
+def virtual_memory(ctx):
     usage = psutil.virtual_memory().percent
     if usage > 80:
-        return Shell.important + "%dVM" % usage
+        return Shell.important + "%d" % usage + Char.memory
     else:
         return ""
 
@@ -257,7 +316,7 @@ clocks = {
 
 
 @info(align="R")
-def clock(_1, _2):
+def clock(ctx):
     hour = time.localtime().tm_hour % 12
     minute = time.localtime().tm_min
     if minute < 15:
@@ -272,7 +331,7 @@ def clock(_1, _2):
     return clocks[hour * 100 + minute]
 
 
-def start():
+def start(ctx):
     euid = os.geteuid()
     user = ""
     if euid == 0:
@@ -286,28 +345,41 @@ def start():
     return color + user + Char.start + " "
 
 
+class ctx:
+    rc = 0
+    maxwidth = 1000
+    files = []
+    dirs = []
+
+
 # NOTE Set export DEBUG_PROMPT=1 to show debug log on prompt making
 def main():
     if os.environ.get("DEBUG_PROMPT"):
         logging.basicConfig(level=logging.DEBUG)
 
-    ctx = {}
+    # collect information
     for arg in sys.argv[1:]:
         try:
             key, value = arg.split('=', 1)
-            ctx[key] = value
+            setattr(ctx, key, value)
         except ValueError:
-            ctx[arg] = None
-    D("ctx=%s", ctx)
+            setattr(ctx, arg, None)
+    for entry in os.scandir("."):
+        if entry.is_dir():
+            ctx.dirs.append(entry)
+        else:
+            ctx.files.append(entry)
+    D("ctx=%s", vars(ctx))
 
+    # detemine column width
     columns, _ = shutil.get_terminal_size()  # seems not to work always
     D("columns=%d", columns)
 
-    w = sys.stdout.write
-
+    # render components infos
     remain = columns - 1 - 1
     for info in infos:
-        info.render(int(2 / 3 * remain), ctx)
+        ctx.maxwidth = int(2 / 3 * remain)
+        info.render(ctx)
         if info.value:
             remain -= info.width + 1
     remain += 1 + 1
@@ -316,9 +388,12 @@ def main():
         D("info-%d %s %s%d '%s'", i, info.name, info.align, info.width,
           info.value)
 
+    # gather areas
     lefts = [i.value for i in infos if i.align == "L" and i.value]
     rights = [i.value for i in infos if i.align == "R" and i.value]
 
+    # construct prompt
+    w = sys.stdout.write
     w(Shell.reset)
     w(Shell.line)
     w(Char.fill)
@@ -327,7 +402,7 @@ def main():
     w(Char.fill.join(rights))
     w(Char.fill)
     w(Shell.reset)
-    w(start())
+    w(start(ctx))
     w(Shell.reset)
 
 
