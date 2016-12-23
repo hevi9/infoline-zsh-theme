@@ -17,11 +17,15 @@
   * Untracked files
   * Repo ahead, behind or diverged from upstream. Missing upstream.
 * Show python virtual env
+* Show number of files in current directory with color: ok - all writable
+  focus - some not writable, error - none writable
+* Show number of directories in current dircetory with color:
+  ok - all writable, focus - some not writable, error - none writable
 * 🕱 Program return code if error
 * ⚙ Number of spawned jobs from shell
 * ⮇ Shell level indicator
 * 🖸 Disk usage alert if over 80% capacity
-* VM Virtual memory usage alert if over 80% capacity
+* 🖫 Virtual memory usage alert if over 80% capacity
 
 ## Install
 Install theme as symlink to oh my zsh $ZSH/themes

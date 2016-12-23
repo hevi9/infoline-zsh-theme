@@ -53,7 +53,8 @@ class NoColor:
 
 
 # non-printable terminal control sequence wrap
-zsh_cover = lambda t: "%%{%s%%}" % t
+def zsh_cover(t):
+    return "%%{%s%%}" % t
 
 
 class Shell(NoColor):
@@ -112,7 +113,10 @@ def host(ctx):
 ##   * Number of files in current dir
 @info()
 def cwd(ctx):
-    cwd = os.getcwd()
+    try:
+        cwd = os.getcwd()
+    except FileNotFoundError:  # missing cwd
+        return Shell.error + os.environ.get("PWD", "") + Char.skull
     if os.access(cwd, os.W_OK):
         color = Shell.ok
     else:
@@ -326,9 +330,12 @@ def clock(ctx):
     else:
         minute = 0
         hour += 1
-        hour = 0 if hour > 12 else hour
+    hour = 0 if hour > 11 else hour
     D("time=%d %d %d", hour, minute, hour * 100 + minute)
-    return clocks[hour * 100 + minute]
+    try:
+        return clocks[hour * 100 + minute]
+    except KeyError:
+        return ""
 
 
 def start(ctx):
@@ -408,3 +415,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# TODO main exception wrap
+
+# Copyright (C) 2016 Petri Heinilä, License LGPLv3
