@@ -26,7 +26,7 @@
 
 ### Antigen
 
-Add `antigen bundle hevi9/infoline-zsh-theme` to your .zshrc file. [Antigen](https://github.com/zsh-users/antigen) will handle cloning the plugin for you automatically the next time you start zsh. You can also add the plugin to a running zsh with `antigen bundle hevi9/infoline-zsh-theme` for testing before adding it to your `.zshrc`.
+Add `antigen bundle hevi9/infoline-zsh-theme` to your `.zshrc` file. [Antigen](https://github.com/zsh-users/antigen) will handle cloning the plugin for you automatically the next time you start zsh. You can also add the plugin to a running zsh with `antigen bundle hevi9/infoline-zsh-theme` for testing before adding it to your `.zshrc`.
 
 ### Installing to use directly in `.zshrc` without a Framework
 
@@ -45,7 +45,7 @@ Install theme as symlink to oh my zsh $ZSH/themes
 
 ### Zgen
 
-Add `zgen load hevi9/infoline-zsh-theme` to your .zshrc file in the same function you're doing your other `zgen load` calls in. [Zgen](https://github.com/tarjoilija/zgen) will automatically clone the repository for you when you do a `zgen save`.
+Add `zgen load hevi9/infoline-zsh-theme` to your `.zshrc` file in the same function you're doing your other `zgen load` calls in. [Zgen](https://github.com/tarjoilija/zgen) will automatically clone the repository for you when you do a `zgen save`.
 
 ## Requirements
   * 256 color and unicode terminal
