@@ -41,10 +41,7 @@ dev: uninstall
 	$(PY) -m pip install --user grip flake8
 	$(PIP) install --user -e .
 
-README.md: readme.sh infoline/__main__.py
-	zsh readme.sh >$@
-
-serve: README.md
+serve:
 	grip --quiet --browser README.md
 
 check:
