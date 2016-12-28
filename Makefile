@@ -3,6 +3,7 @@ NAME=infoline
 PY=python3
 PIP=$(PY) -m pip
 
+ZSH=$(HOME)/.oh-my-zsh
 themes_dir=$(ZSH)/themes
 target=$(themes_dir)/infoline.zsh-theme
 
