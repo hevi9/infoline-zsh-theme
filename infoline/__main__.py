@@ -101,7 +101,6 @@ def info(*, priority=0, align="L"):
     return wrap
 
 
-## * Show host if in remote (ssh) computer
 @info()
 def host(ctx):
     try:
@@ -111,10 +110,6 @@ def host(ctx):
         return ""
 
 
-## * Show Current Working directory
-##   * show cwd, trunkated from start if not enough room
-##   * Current dir part as green if can write, red if not
-##   * Number of files in current dir
 @info()
 def cwd(ctx):
     try:
@@ -149,14 +144,7 @@ def cwd(ctx):
             return color + name + Shell.default
 
 
-# TODO git detached head
-# TODO git conflicted files
-# TODO git stashes
 # logic from https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/git.zsh
-## * Show git status if exists
-##   * Repo dirty
-##   * Untracked files
-##   * Repo ahead, behind or diverged from upstream. Missing upstream.
 @info()
 def show_git(ctx):
     try:
@@ -189,7 +177,6 @@ def show_git(ctx):
 
 # NOTE Set export VIRTUAL_ENV_DISABLE_PROMPT=yes
 # TODO Sign for virtual env
-## * Show python virtual env
 @info()
 def virtual_env(ctx):
     try:
@@ -213,8 +200,6 @@ def can_write(entry):
             (euid == st.st_uid and mode & stat.S_IWUSR))
 
 
-## * Show number of files in current directory with color: ok - all writable
-##   focus - some not writable, error - none writable
 @info(align="R")
 def files(ctx):
     if len(ctx.files):
@@ -232,8 +217,6 @@ def files(ctx):
         return ""
 
 
-## * Show number of directories in current dircetory with color:
-##   ok - all writable, focus - some not writable, error - none writable
 @info(align="R")
 def dirs(ctx):
     if len(ctx.dirs):
@@ -251,7 +234,6 @@ def dirs(ctx):
         return ""
 
 
-## * 🕱 Program return code if error
 @info(align="R")
 def rc(ctx):
     try:
@@ -264,7 +246,6 @@ def rc(ctx):
         return Shell.error + "rc=$?"
 
 
-## * ⚙ Number of spawned jobs from shell
 @info(align="R")
 def jobs(ctx):
     this_process = psutil.Process()
@@ -277,7 +258,6 @@ def jobs(ctx):
         return ""
 
 
-## * ⮇ Shell level indicator
 @info(align="R")
 def shell_level(ctx):
     try:
@@ -292,7 +272,6 @@ def shell_level(ctx):
         return Shell.error + "\\$SHLVL"
 
 
-## * 🖸 Disk usage alert if over 80% capacity
 @info(align="R")
 def disk(ctx):
     usage = psutil.disk_usage(".").percent
@@ -302,7 +281,6 @@ def disk(ctx):
         return ""
 
 
-## * 🖫 Virtual memory usage alert if over 80% capacity
 @info(align="R")
 def virtual_memory(ctx):
     usage = psutil.virtual_memory().percent

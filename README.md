@@ -1,5 +1,6 @@
 
 # Infoline zsh prompt theme
+Python experimental
 
 ![Screenshot of Infoline](screenshot.png "Infoline screenshot")
 
@@ -10,21 +11,22 @@
 * Show Current Working directory
   * show cwd, trunkated from start if not enough room
   * Current dir part as green if can write, red if not
-  * Number of files in current dir
 * Show git status if exists
-  * Repo dirty
-  * Untracked files
-  * Repo ahead, behind or diverged from upstream. Missing upstream.
+  * Branch name with color: yellow if repo dirty
+  * ? Untracked files
+  * Repo ⭱ ahead, ⭳ behind or ⭿ diverged from upstream. ⭱ Missing upstream.
 * Show python virtual env
-* Show number of files in current directory with color: ok - all writable
-  focus - some not writable, error - none writable
-* Show number of directories in current dircetory with color:
-  ok - all writable, focus - some not writable, error - none writable
+* 🗎 Show number of files in current directory with color: green - all writable
+  yellow - some not writable, red - none writable
+* 📁 Show number of directories in current directory with color:
+  green - all writable, yellow - some not writable, red - none writable
 * 🕱 Program return code if error
 * ⚙ Number of spawned jobs from shell
 * ⮇ Shell level indicator
 * 🖸 Disk usage alert if over 80% capacity
 * 🖫 Virtual memory usage alert if over 80% capacity
+* 🕦 Analog clock (within 30m resolution)
+* ▶ Start arrow with color and name if not login user
 
 ## Install Instructions
 
