@@ -79,7 +79,11 @@ class Info:
         self.align = align
 
     def render(self, ctx):
-        self.value = self.render_func(ctx)
+        try:
+            self.value = self.render_func(ctx)
+        except Exception as ex:
+            D("%s: %s", self.name, str(ex))
+            self.value = Shell.error + self.name
         if self.value:
             self.value += Shell.default
         self.width = len(Shell.strip.sub('', self.value))
