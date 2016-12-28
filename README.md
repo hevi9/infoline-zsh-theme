@@ -4,7 +4,6 @@
 ![Screenshot of Infoline](screenshot.png "Infoline screenshot")
 
 
-
 ## Features
 
 * Show host if in remote (ssh) computer
@@ -27,7 +26,19 @@
 * 🖸 Disk usage alert if over 80% capacity
 * 🖫 Virtual memory usage alert if over 80% capacity
 
-## Install
+## Install Instructions
+
+### Antigen
+
+Add `antigen bundle hevi9/infoline-zsh-theme` to your `.zshrc` file. [Antigen](https://github.com/zsh-users/antigen) will handle cloning the plugin for you automatically the next time you start zsh. You can also add the plugin to a running zsh with `antigen bundle hevi9/infoline-zsh-theme` for testing before adding it to your `.zshrc`.
+
+### Installing to use directly in `.zshrc` without a Framework
+
+  * `make install` instead of `make install-omz`
+  * Edit infoline.zsh-theme contents into your `.zshrc`
+
+### Oh-My-Zsh
+
 Install theme as symlink to oh my zsh $ZSH/themes
 ```shell
 > cd ~/src   # or wherever you like to collect local git repositories
@@ -36,19 +47,17 @@ Install theme as symlink to oh my zsh $ZSH/themes
 > make install-omz
 ```
 
-Install to use directly in .zshrc
-  * make install instead make install-omz
-  * Edit infoline.zsh-theme contents into your .zshrc
+### Zgen
 
+Add `zgen load hevi9/infoline-zsh-theme` to your `.zshrc` file in the same function you're doing your other `zgen load` calls in. [Zgen](https://github.com/tarjoilija/zgen) will automatically clone the repository for you when you do a `zgen save`.
 
 ## Requirements
   * 256 color and unicode terminal
-  * zsh
-  * oh my zsh - https://github.com/robbyrussell/oh-my-zsh
+  * zsh as your login shell
+  * [oh my zsh](https://github.com/robbyrussell/oh-my-zsh) or another zsh framework that is oh-my-zsh compatible like [Zgen](https://github.com/tarjoilija/zgen) or [Antigen](https://github.com/zsh-users/antigen).
   * Python 3.4+, pip and dependencies via pip install:
     * psutils
     * gitpython
-
 
 ## Notes
  * This prompt uses python for more complex and convient programmnig than shell,
