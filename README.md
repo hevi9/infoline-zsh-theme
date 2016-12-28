@@ -28,6 +28,16 @@ Python experimental
 * 🕦 Analog clock (within 30m resolution)
 * ▶ Start arrow with color and name if not login user
 
+## Feasibility
+
+  * This prompt uses python for more complex and convenient programming than shell,
+    therefore process startup cost is higher. Prompt execution takes usually
+    120ms to 340ms depending computer. Usually there in no need to enter
+    commands under 500ms, but not having immediate (< 100ms) response gives
+    a bit sluggish feeling.
+  * Color scheme works best on gray-a-like terminal background.
+
+
 ## Install Instructions
 
 ### Antigen
@@ -62,9 +72,6 @@ Add `zgen load hevi9/infoline-zsh-theme` to your `.zshrc` file in the same funct
     * gitpython
 
 ## Notes
-  * This prompt uses python for more complex and convenient programming than shell,
-   therefore process startup cost is higher. Prompt execution takes usually
-   120ms to 340ms depending computer.
   * Set export DEBUG_PROMPT=1 to show debug log on prompt construction
   * Set export VIRTUAL_ENV_DISABLE_PROMPT=yes
 
