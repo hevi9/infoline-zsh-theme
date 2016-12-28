@@ -62,16 +62,12 @@ Add `zgen load hevi9/infoline-zsh-theme` to your `.zshrc` file in the same funct
     * gitpython
 
 ## Notes
- * This prompt uses python for more complex and convient programmnig than shell,
+  * This prompt uses python for more complex and convenient programming than shell,
    therefore process startup cost is higher. Prompt execution takes usually
-   130ms.
- * Set export VIRTUAL_ENV_DISABLE_PROMPT=yes
- * Set export DEBUG_PROMPT=1 to show debug log on prompt making
+   120ms to 340ms depending computer.
+  * Set export DEBUG_PROMPT=1 to show debug log on prompt construction
+  * Set export VIRTUAL_ENV_DISABLE_PROMPT=yes
 
-## Todos
- * bash support, after bash unicode and non-printable wrap issues are resolved
- * git detached head
- * git conflicted files
- * git stashes
- * Sign for virtual env
- * todos in current directory info
+## Todos, Enchantments, Bugs, Issues ..
+
+[In github project issues section](issues)
