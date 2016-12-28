@@ -156,7 +156,7 @@ def cwd(ctx):
 @info()
 def show_git(ctx):
     try:
-        repo = git.Repo()
+        repo = git.Repo(search_parent_directories=True)
     except git.InvalidGitRepositoryError:
         return ""
     except Exception as ex:
