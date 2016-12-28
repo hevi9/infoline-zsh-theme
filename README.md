@@ -70,4 +70,4 @@ Add `zgen load hevi9/infoline-zsh-theme` to your `.zshrc` file in the same funct
 
 ## Todos, Enchantments, Bugs, Issues ..
 
-[In github project issues section](issues)
+https://github.com/hevi9/infoline-zsh-theme/issues
