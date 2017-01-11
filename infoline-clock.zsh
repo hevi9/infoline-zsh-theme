@@ -17,9 +17,9 @@ infoline-clock() {
     minutes=30
   else
     hours=$(( hours + 1 ))
-    [[ hours -ge 12 ]] && hours=00
     minutes=00
   fi
+  [[ hours -ge 12 ]] && hours=00
   print -n $_infoline_clock[$(printf "%02d%02d" $hours $minutes)]
 }
 
