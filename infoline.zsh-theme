@@ -55,6 +55,7 @@ infoline_start=()
 # source sections
 source ${0:A:h}/infoline-host.zsh
 source ${0:A:h}/infoline-cwd.zsh
+source ${0:A:h}/infoline-vcsgit.zsh
 source ${0:A:h}/infoline-rc.zsh
 source ${0:A:h}/infoline-start.zsh
 # source ${0:A:h}/infoline-history.zsh
@@ -113,7 +114,8 @@ infoline-prompt() {
   print -nr -- "$start_value $infoline_color[reset]"
 }
 
-#print -P "$(infoline-prompt)"
+#print "${(qqqq)$(infoline-prompt)}"
+# print -P "$(infoline-prompt)"
 PROMPT='$(infoline-prompt)'
 
 # cleanup
