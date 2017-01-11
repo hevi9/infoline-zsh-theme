@@ -1,9 +1,10 @@
 infoline-disk() {
-  local use
+  local use color
   use=${(S)$(df --output=pcent .)//[^0-9]}
   use=${(S)use// } # use have strange space, kill it
-  if [ $use -gt 80 ]; then
-    print -n $infoline_color[error]${use}$infoline_sign[disk]
+  [[ $use -gt 80 ]] && color=$infoline_color[error] || color=$infoline_color[note]
+  if [[ $use -gt 80 || x$PWD = x$HOME ]]; then
+    print -n $color${use}$infoline_sign[disk]
   fi
 }
 infoline_right+=infoline-disk

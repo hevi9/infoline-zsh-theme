@@ -23,8 +23,7 @@ Python experimental
 * 🕱 Program return code if error
 * ⚙ Number of spawned jobs from shell
 * ⮇ Shell level indicator
-* 🖸 Disk usage alert if over 80% capacity
-* 🖫 Virtual memory usage alert if over 80% capacity
+* 🖸 Disk usage alert if over 80% capacity. Show disk usage when cwd is $HOME.
 * 🕦 Analog clock (within 30m resolution)
 * ▶ Start arrow with color and name if not login user
 
