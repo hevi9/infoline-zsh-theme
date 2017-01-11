@@ -14,7 +14,7 @@ Python experimental
 * Show git status if exists
   * Branch name with color: yellow if repo dirty
   * ? Untracked files
-  * Repo ⭱ ahead, ⭳ behind or ⭿ diverged from upstream. ⭱ Missing upstream.
+  * Repo ⭱ ahead or ⭳ behind. ⭱ Missing upstream.
 * Show python virtual env
 * 🗎 Show number of files in current directory with color: green - all writable
   yellow - some not writable, red - none writable
