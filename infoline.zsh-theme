@@ -37,7 +37,7 @@ infoline_sign=(
   behind '⭳'
   diverged '⭿'
   differ '⭾'
-  stashed '≡'
+  stashes '≡'
   start '▶'
   file '🗎'
   dir '📁'

@@ -2,7 +2,7 @@
     local -a stashes
     if [[ -s ${hook_com[base]}/.git/refs/stash ]] ; then
         stashes=$(git stash list 2>/dev/null | wc -l)
-        hook_com[misc]+="${stashes}$infoline_sign[stashes]"
+        hook_com[misc]+="$infoline_color[focus]${stashes}$infoline_sign[stashes]$infoline_color[default]"
     fi
 }
 

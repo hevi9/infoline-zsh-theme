@@ -3,7 +3,7 @@
 dir=samplegits
 script=../../infoline.zsh-theme show
 
-all: empty untracked unstaged staged stash ahead behind merge
+all: empty untracked unstaged staged stash ahead behind merge detached
 
 $(dir)/empty:
 	mkdir -p $@
@@ -117,6 +117,19 @@ $(dir)/merge:
 	-cd $@ && git merge second
 
 merge: $(dir)/merge
+	@echo "*** $<"
+	@cd $< && zsh $(script)
+	@cd $< && git status -s
+
+$(dir)/detached:
+	mkdir -p $@
+	cd $@ && git init
+	cd $@ && echo testing > README.md
+	cd $@ && git add README.md
+	cd $@ && git commit -m "test"
+	cd $@ && git checkout --detach
+
+detached: $(dir)/detached
 	@echo "*** $<"
 	@cd $< && zsh $(script)
 	@cd $< && git status -s
