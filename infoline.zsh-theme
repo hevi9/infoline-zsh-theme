@@ -115,7 +115,13 @@ infoline-prompt() {
 }
 
 if (( ${*[(I)show]} )); then
-  print -P "$(infoline-prompt)"
+  if (( ${*[(I)false]} )); then
+    false
+    print -n -P "$(infoline-prompt)"
+  else
+    true
+    print -n -P "$(infoline-prompt)"
+  fi
 else
   PROMPT='$(infoline-prompt)'
 fi
