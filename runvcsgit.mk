@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 dir=samplegits
-script=../../vcsgit.zsh
+script=../../infoline.zsh-theme show
 
 all: empty untracked unstaged staged stash ahead behind merge
 
@@ -114,7 +114,7 @@ $(dir)/merge:
 	cd $@ && git checkout master
 	cd $@ && echo tetssng > README.md
 	cd $@ && git commit -am "test 3"
-	cd $@ && git merge second
+	-cd $@ && git merge second
 
 merge: $(dir)/merge
 	@echo "*** $<"

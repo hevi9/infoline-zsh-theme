@@ -114,13 +114,11 @@ infoline-prompt() {
   print -nr -- "$start_value $infoline_color[reset]"
 }
 
-#print "${(qqqq)$(infoline-prompt)}"
-# print -P "$(infoline-prompt)"
-PROMPT='$(infoline-prompt)'
+if (( ${*[(I)show]} )); then
+  print -P "$(infoline-prompt)"
+else
+  PROMPT='$(infoline-prompt)'
+fi
 
 # cleanup
 unset debug
-
-# export COLUMNS
-# export VIRTUAL_ENV_DISABLE_PROMPT=yes
-# PROMPT='$(/usr/bin/python3 -m infoline rc=$?)'
