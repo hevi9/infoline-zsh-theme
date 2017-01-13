@@ -56,6 +56,7 @@ infoline_start=()
 source ${0:A:h}/infoline-host.zsh
 source ${0:A:h}/infoline-cwd.zsh
 source ${0:A:h}/infoline-vcsgit.zsh
+source ${0:A:h}/infoline-virtualenv.zsh
 source ${0:A:h}/infoline-rc.zsh
 source ${0:A:h}/infoline-start.zsh
 # source ${0:A:h}/infoline-history.zsh
