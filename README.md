@@ -36,7 +36,8 @@ source $HOME/src/infoline-zsh-theme/infoline.zsh-theme
 
 ### Oh-My-Zsh
 
-Clone as manually. Link theme into oh my zsh themes (or your ZSH_CUSTOM)
+Clone as manually. Link theme into [oh my zsh](https://github.com/robbyrussell/oh-my-zsh)
+themes (or your ZSH_CUSTOM)
 ```shell
 ln -sf ~/src/infoline-zsh-theme/infoline.zsh-theme ~/.oh-my-zsh/themes/infoline.zsh-theme
 ```
@@ -55,11 +56,17 @@ Add `zgen load hevi9/infoline-zsh-theme` to your `.zshrc` file in the same funct
 
 ## Requirements
   * 256 color and unicode terminal
-  * zsh as your login shell
+  * [zsh](http://www.zsh.org/) as your login shell
+
+## Configuration
+
+No configuration yet. Good to go as it is. Configurations will be added as
+need basis.
 
 ## Notes
-  * This prompt theme has python implementation, but it was too slow: 120ms to
-    350ms for prompt use. If interested about python implementation see
+  * This prompt theme had python implementation, but it was too slow: 120ms to
+    350ms for prompt use. User experience was sluggish and slowness interfere completion
+    with slow redraw of prompt. If interested about python implementation see
     pythonsave branch.
 
 ## Todos, Enchantments, Bugs, Issues ..
