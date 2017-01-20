@@ -16,7 +16,8 @@
 * N🕱 Program return code if error
 * N⚙ Number of spawned jobs from shell
 * ⮇ Shell level indicator
-* NN🖸 Disk usage alert if over 80% capacity
+* NN🖫 Disk usage alert if over 80% yellow or 90% red capacity and show on $HOME
+  capacity
 * 🕦 Analog clock (within 30m resolution)
 * ▶ Start arrow with color and name if not login user
 
@@ -56,11 +57,11 @@ Add `zgen load hevi9/infoline-zsh-theme` to your `.zshrc` file in the same funct
 
 ## Requirements
   * 256 color and unicode terminal
-  * [zsh](http://www.zsh.org/) as your login shell
+  * [zsh](http://www.zsh.org/)
 
 ## Configuration
 
-No configuration yet. Good to go as it is. Configurations will be added as
+No configuration yet. Good to go as it is. Configurations will be added by
 need basis.
 
 ## Notes
