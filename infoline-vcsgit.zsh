@@ -24,7 +24,7 @@
 +vi-git-untracked() {
   if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
     git status --porcelain | grep '??' &> /dev/null ; then
-    hook_com[unstaged]+=$infoline_color[important]
+    hook_com[unstaged]+=$infoline_color[important]$infoline_sign[untracked]
   fi
 }
 
@@ -37,8 +37,8 @@ zstyle ':vcs_info:*' get-revision true
 zstyle ':vcs_info:*' check-for-changes true
 
 zstyle ':vcs_info:*' branchformat '%b@%r'
-zstyle ':vcs_info:*' unstagedstr $infoline_color[focus]
-zstyle ':vcs_info:*' stagedstr $infoline_color[note]
+zstyle ':vcs_info:*' unstagedstr $infoline_color[focus]$infoline_sign[cross]
+zstyle ':vcs_info:*' stagedstr $infoline_color[note]$infoline_sign[plus]
 zstyle ':vcs_info:git:*' patch-format " ${infoline_color[focus]}%n${infoline_sign[differ]}${infoline_color[default]} "
 zstyle ':vcs_info:*' formats '%c%u%b %m'
 zstyle ':vcs_info:*' actionformats "%c%u%b ${infoline_color[important]}%a${infoline_color[default]}%m"
