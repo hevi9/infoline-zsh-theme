@@ -5,6 +5,7 @@
 
 ## Features
 
+* Line to separate program output and provide information
 * Show host if in remote (ssh) computer
 * Show Current Working directory
   * Current dir part as green if can write, red if not
@@ -13,50 +14,32 @@
     and blue for staged files
   * Repo N⭱ ahead or N⭳ behind.
   * Merge ⭾ etc action state (via vcs_info)
-* N🕱 Program return code if error
+* Program return code if error
 * N⚙ Number of spawned jobs from shell
 * ⮇ Shell level indicator
-* NN🖫 Disk usage alert if over 80% yellow or 90% red capacity and show on $HOME
+* Disk usage alert if over 80% yellow or 90% red capacity and show on $HOME
   capacity
-* 🕦 Analog clock (within 30m resolution)
 * ▶ Start arrow with color and name if not login user
+
+Limitations
+
+* Uses 8-colors, works best with Solarized or Dark Pastels color-schemes.
 
 ## Install Instructions
 
-### Installing manually to use directly in `.zshrc` without a Framework
-
-Git clone
+1. Git clone
 ```shell
 > cd ~/src   # or wherever you like to collect local git repositories
 > git clone https://github.com/hevi9/infoline-zsh-theme.git
 ```
-Edit .zshrc
+2. Edit .zshrc
 ```shell
 source $HOME/src/infoline-zsh-theme/infoline.zsh-theme
 ```
 
-### Oh-My-Zsh
-
-Clone as manually. Link theme into [oh my zsh](https://github.com/robbyrussell/oh-my-zsh)
-themes (or your ZSH_CUSTOM)
-```shell
-ln -sf ~/src/infoline-zsh-theme/infoline.zsh-theme ~/.oh-my-zsh/themes/infoline.zsh-theme
-```
-Edit .zshrc
-```
-ZSH_THEME="infoline"
-```
-
-### Antigen
-
-Add `antigen bundle hevi9/infoline-zsh-theme` to your `.zshrc` file. [Antigen](https://github.com/zsh-users/antigen) will handle cloning the plugin for you automatically the next time you start zsh. You can also add the plugin to a running zsh with `antigen bundle hevi9/infoline-zsh-theme` for testing before adding it to your `.zshrc`.
-
-### Zgen
-
-Add `zgen load hevi9/infoline-zsh-theme` to your `.zshrc` file in the same function you're doing your other `zgen load` calls in. [Zgen](https://github.com/tarjoilija/zgen) will automatically clone the repository for you when you do a `zgen save`.
+.. or use your's favorite zsh package manager.
 
 ## Requirements
-  * 256 color and unicode terminal
   * [zsh](http://www.zsh.org/)
 
 ## Configuration
