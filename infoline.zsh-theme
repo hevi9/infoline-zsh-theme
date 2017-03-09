@@ -68,7 +68,7 @@ source ${0:A:h}/infoline-start.zsh
 source ${0:A:h}/infoline-jobs.zsh
 source ${0:A:h}/infoline-shelllevel.zsh
 source ${0:A:h}/infoline-disk.zsh
-source ${0:A:h}/infoline-clock.zsh
+#source ${0:A:h}/infoline-clock.zsh
 
 
 # render prompt on each new command line
@@ -102,7 +102,7 @@ infoline-prompt-line() {
   left_width=${#${(%)${(S)left_value//\%\{*\%\}}}}
 
   # center fill
-  width=$((COLUMNS - left_width - right_width - 2 - 1))
+  width=$((COLUMNS - left_width - right_width - 2))
   if [ $width -gt 0 ]; then
     fill=${(r:$width:: :)}
   else
