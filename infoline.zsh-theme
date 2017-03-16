@@ -25,32 +25,33 @@ infoline_color=(
 # define signs
 typeset -Ag infoline_sign
 infoline_sign=(
-  cont '…'
-  plus '✚'
-  cross '✖'
-  dot '●'
-  dots '⛬'
-  star '🟉'
-  flag '⚑'
-  skull '🕱'
-  jobs '⚙'
-  level '⮇'
-  disk '🖸'
-  # memory '🖫'
-  memory '*'
+  cont '…' # 1 char
+  plus '✚' # 1 char, bad
+  cross '✖' # 1 char, bad
+  dot '●' # 1 char
+  dots '⛬' # 1char
+  # star '🟉' # 2 char
+  star '*'
+  flag '⚑' # 1 char
+  # skull '🕱' # 2 char
+  skull '!' # TODO: change to error
+  jobs '⚙' # 1 char
+  level '⮇' # 1 char but bad
+  disk '🖸' # char
+  memory '🖫' # 2 char
   untracked '?'
-  ahead '⭱'
-  behind '⭳'
-  diverged '⭿'
-  differ '⭾'
-  stashes '≡'
-  start '▶'
-  file '🗎'
-  dir '📁'
-  todo '🔨'
-  action '↯'
-  location '⌘'
-  check '🗹'
+  ahead '⭱' # 1 char
+  behind '⭳' # 1 char
+  diverged '⭿' # 1 char
+  differ '⭾' # 1 char
+  stashes '≡' # 1 char
+  start '▶' # 1 char
+  file '🗎' # 2 char
+  dir '📁' # 2 char
+  todo '🔨' # 2 char
+  action '↯' # 1 char
+  location '⌘' # 1char
+  check '🗹' # 2 char
 )
 
 # infoline sections
@@ -69,7 +70,7 @@ source ${0:A:h}/infoline-start.zsh
 source ${0:A:h}/infoline-jobs.zsh
 source ${0:A:h}/infoline-shelllevel.zsh
 source ${0:A:h}/infoline-disk.zsh
-source ${0:A:h}/infoline-clock.zsh
+#source ${0:A:h}/infoline-clock.zsh
 
 
 # render prompt on each new command line
@@ -103,7 +104,7 @@ infoline-prompt-line() {
   left_width=${#${(%)${(S)left_value//\%\{*\%\}}}}
 
   # center fill
-  width=$((COLUMNS - left_width - right_width - 2 - 1))
+  width=$((COLUMNS - left_width - right_width - 2))
   if [ $width -gt 0 ]; then
     fill=${(r:$width:: :)}
   else
