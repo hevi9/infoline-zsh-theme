@@ -37,7 +37,8 @@ infoline_sign=(
   skull '!' # TODO: change to error
   jobs '⚙' # 1 char
   level '⮇' # 1 char but bad
-  disk '🖸' # char
+  # disk '🖸' # 2 char
+  disk 'o' # 2 char
   memory '🖫' # 2 char
   untracked '?'
   ahead '⭱' # 1 char
