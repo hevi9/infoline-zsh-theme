@@ -115,6 +115,8 @@ infoline-prompt() {
   print -nr -- "$start_value $infoline_color[reset]"
 }
 
+setopt prompt_subst
+
 if (( ${*[(I)show]} )); then
   if (( ${*[(I)false]} )); then
     false
